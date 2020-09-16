@@ -18,7 +18,7 @@ app.get("/api/getMembers", (req, res) => {
 	let getMembers = "SELECT * FROM member ORDER BY name";
 	connection.query(getMembers, (err, results) => {
 		if (err) {
-			res.status(404).json("Erreur lors de la récupération des données");
+			res.status(500).json("Erreur lors de la récupération des données");
 		} else {
 			res.status(200).json(results);
 		}
@@ -45,6 +45,11 @@ app.delete("/api/deleteMember/:id", (req, res) => {
 
 	const deleteMember = "DELETE FROM member WHERE id = ?";
 	connection.query(deleteMember, id, (err, results) => {
+		if (err) {
+			res.status(500).send("Erreur lors de la modification");
+		} else {
+			res.sendStatus(200);
+		}
 		console.log(results);
 	});
 });
